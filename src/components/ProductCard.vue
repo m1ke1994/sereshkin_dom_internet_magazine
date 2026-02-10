@@ -1,5 +1,5 @@
 ﻿<template>
-  <article class="card card-hover overflow-hidden">
+  <article class="card card-hover overflow-hidden h-full flex flex-col">
     <div class="relative">
       <RouterLink :to="`/product/${product.id}`" class="block">
         <img
@@ -11,8 +11,8 @@
       <span v-if="!product.inStock" class="badge absolute left-4 top-4">Нет в наличии</span>
     </div>
 
-    <div class="p-6 space-y-4">
-      <div class="space-y-2">
+    <div class="p-6 space-y-4 flex flex-col h-full">
+      <div class="space-y-2 flex-1">
         <p class="tag">{{ product.category }}</p>
         <RouterLink :to="`/product/${product.id}`">
           <h3 class="text-lg sm:text-xl font-semibold leading-snug">
@@ -24,20 +24,22 @@
         </p>
       </div>
 
-      <div class="flex items-center justify-between">
-        <span class="text-xl font-semibold" :style="{ color: 'var(--accent)' }">
-          {{ formatPrice(product.price) }}
-        </span>
-        <button
-          class="btn btn-primary"
-          :disabled="!product.inStock"
-          @click="handleAddToCart"
-        >
-          {{ isInCart(product.id) ? 'В корзине' : 'Купить' }}
-        </button>
-      </div>
+      <div class="mt-auto space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="text-xl font-semibold" :style="{ color: 'var(--accent)' }">
+            {{ formatPrice(product.price) }}
+          </span>
+          <button
+            class="btn btn-primary"
+            :disabled="!product.inStock"
+            @click="handleAddToCart"
+          >
+            {{ isInCart(product.id) ? 'В корзине' : 'Купить' }}
+          </button>
+        </div>
 
-      <RouterLink class="btn btn-secondary w-full" :to="`/product/${product.id}`">Подробнее</RouterLink>
+        <RouterLink class="btn btn-secondary w-full" :to="`/product/${product.id}`">Подробнее</RouterLink>
+      </div>
     </div>
   </article>
 </template>

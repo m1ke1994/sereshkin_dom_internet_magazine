@@ -21,14 +21,21 @@
           </div>
         </div>
         <div class="card p-6">
-          <div class="aspect-[4/3] rounded-2xl bg-neutral-100 flex items-center justify-center">
-            <img src="/vite.svg" alt="Пример изделия" class="h-24 w-24 opacity-70" />
+          <div class="aspect-[4/3] rounded-2xl bg-neutral-100 flex items-center justify-center overflow-hidden">
+            <img
+              :src="weeklyImage"
+              :alt="weeklyProduct?.title || 'Пример изделия'"
+              class="h-full w-full object-cover"
+              @error="handleWeeklyImageError"
+            />
           </div>
           <div class="mt-6 grid gap-3">
             <p class="text-sm" :style="{ color: 'var(--muted)' }">Выбор недели</p>
-            <h2 class="text-2xl font-semibold">Берёзовая роща</h2>
-            <p class="section-subtitle">Сдержанный орнамент и тёплый тон дуба.</p>
-            <RouterLink to="/product/5" class="btn btn-primary">Смотреть модель</RouterLink>
+            <h2 class="text-2xl font-semibold">{{ weeklyProduct?.title || 'Модель недели' }}</h2>
+            <p class="section-subtitle">{{ weeklyProduct?.description || 'Актуальная подборка на этой неделе.' }}</p>
+            <RouterLink v-if="weeklyProduct" :to="`/product/${weeklyProduct.id}`" class="btn btn-primary">
+              Смотреть модель
+            </RouterLink>
           </div>
         </div>
       </div>
@@ -78,8 +85,15 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { products } from '../data/products'
+import { products, getWeeklyProduct } from '../data/products'
 import ProductCard from '../components/ProductCard.vue'
 
 const featuredProducts = computed(() => products.filter(p => p.inStock).slice(0, 4))
+const weeklyProduct = computed(() => getWeeklyProduct() ?? products[0])
+const weeklyImage = computed(() => weeklyProduct.value?.images?.[0] || '/vite.svg')
+
+const handleWeeklyImageError = (event: Event) => {
+  const target = event.target as HTMLImageElement | null
+  if (target) target.src = '/vite.svg'
+}
 </script>

@@ -1,7 +1,25 @@
+import rawProducts from './products.json'
+
+interface RawProduct {
+  name: string
+  code: string
+  category: string
+  price: number
+  old_price: number | null
+  manufacturer: string
+  dimensions: string
+  mechanism: string
+  sound: string
+  night_mode: string
+  description: string
+  image: string
+}
+
 export interface Product {
   id: number
   title: string
   price: number
+  oldPrice?: number | null
   category: string
   manufacturer: string
   inStock: boolean
@@ -10,165 +28,57 @@ export interface Product {
   images: string[]
 }
 
-export const products: Product[] = [
-  {
-    id: 1,
-    title: 'Домовой Лесовичок',
-    price: 2400,
-    category: 'Традиционные',
-    manufacturer: 'Серёжкин дом',
-    inStock: true,
-    description: 'Настенные часы с тёплой резьбой и мягкой фактурой дерева. Баланс классики и современного силуэта.',
-    specs: {
-      'Материал': 'Массив дуба',
-      'Размер': '30×30 см',
-      'Механизм': 'Кварцевый бесшумный',
-      'Происхождение': 'Россия'
-    },
-    images: ['/vite.svg']
+const imageOverrides: Record<string, string> = {
+  'thumb_mekhanicheskie-napolnye-chasy-tomas-stern-1062ng-001.jpg': 'mekhanicheskie-napolnye-chasy-tomas-stern-1062ng-001.jpg',
+  'thumb_mekhanicheskie-napolnye-chasy-tomas-stern-1069NS_001.jpg': 'mekhanicheskie-napolnye-chasy-tomas-stern-1069NS_001.jpg',
+  'thumb_mekhanicheskie-napolnye-chasy-tomas-stern-1065WS_001.jpg': 'mekhanicheskie-napolnye-chasy-tomas-stern-1065WS_001.jpg',
+  'thumb_mekhanicheskie-napolnye-chasy-tomas-stern-1065ns_001.jpg': 'mekhanicheskie-napolnye-chasy-tomas-stern-1065ns_001.jpg',
+  'thumb_mekhanicheskie-napolnye-chasy-tomas-stern-1051ng240625140157-001.jpg': 'mekhanicheskie-napolnye-chasy-tomas-stern-1051ng240625140157-001.jpg',
+  'thumb_mekhanicheskie-napolnye-chasy-tomas-stern-1052ns_001.jpg': 'test2.jpg',
+  'thumb_mekhanicheskie-napolnye-chasy-tomas-stern-1054ng-001.jpg': 'test2.jpg',
+  'thumb_mekhanicheskie-napolnye-chasy-tomas-stern-1059ng_001.jpg': 'test2.jpg',
+  'thumb_mekhanicheskie-napolnye-chasy-tomas-stern-1051NG-0271-001.jpg': 'test2.jpg',
+  'thumb_mekhanicheskie-napolnye-chasy-tomas-stern-1068BS-001.jpg': 'test2.jpg',
+}
+
+const resolveImage = (image: string) => {
+  if (!image) return '/vite.svg'
+  const fileName = imageOverrides[image] ?? image
+  return `/image/${fileName}`
+}
+
+export const products: Product[] = (rawProducts as RawProduct[]).map((item, index) => ({
+  id: index + 1,
+  title: item.name,
+  price: item.price,
+  oldPrice: item.old_price,
+  category: item.category,
+  manufacturer: item.manufacturer,
+  inStock: true,
+  description: item.description,
+  specs: {
+    'Код': item.code,
+    'Размер': item.dimensions,
+    'Механизм': item.mechanism,
+    'Звук': item.sound,
+    'Ночной режим': item.night_mode,
   },
-  {
-    id: 2,
-    title: 'Самовар',
-    price: 2600,
-    category: 'Традиционные',
-    manufacturer: 'Серёжкин дом',
-    inStock: true,
-    description: 'Коллекционная модель с выразительным силуэтом и ручной росписью.',
-    specs: {
-      'Материал': 'Массив сосны',
-      'Размер': '35×28 см',
-      'Механизм': 'Кварцевый бесшумный',
-      'Происхождение': 'Россия'
-    },
-    images: ['/vite.svg']
-  },
-  {
-    id: 3,
-    title: 'Кот-моряк',
-    price: 2300,
-    category: 'Детские',
-    manufacturer: 'Серёжкин дом',
-    inStock: true,
-    description: 'Лёгкая и яркая модель для детской комнаты с морскими мотивами.',
-    specs: {
-      'Материал': 'Массив берёзы',
-      'Размер': '28×28 см',
-      'Механизм': 'Кварцевый бесшумный',
-      'Происхождение': 'Россия'
-    },
-    images: ['/vite.svg']
-  },
-  {
-    id: 4,
-    title: 'Айболит',
-    price: 2400,
-    category: 'Детские',
-    manufacturer: 'Серёжкин дом',
-    inStock: true,
-    description: 'Дружелюбная модель, созданная для спокойного и уютного интерьера.',
-    specs: {
-      'Материал': 'Массив липы',
-      'Размер': '30×30 см',
-      'Механизм': 'Кварцевый бесшумный',
-      'Происхождение': 'Россия'
-    },
-    images: ['/vite.svg']
-  },
-  {
-    id: 5,
-    title: 'Берёзовая роща',
-    price: 2800,
-    category: 'Природа',
-    manufacturer: 'Серёжкин дом',
-    inStock: true,
-    description: 'Тонкий орнамент и мягкий контраст древесины. Идеально для светлых интерьеров.',
-    specs: {
-      'Материал': 'Массив дуба',
-      'Размер': '35×35 см',
-      'Механизм': 'Кварцевый бесшумный',
-      'Происхождение': 'Россия'
-    },
-    images: ['/vite.svg']
-  },
-  {
-    id: 6,
-    title: 'Матрёшка',
-    price: 2500,
-    category: 'Традиционные',
-    manufacturer: 'Серёжкин дом',
-    inStock: true,
-    description: 'Классический силуэт в современной обработке. Тёплый акцент для гостиной.',
-    specs: {
-      'Материал': 'Массив сосны',
-      'Размер': '32×32 см',
-      'Механизм': 'Кварцевый бесшумный',
-      'Происхождение': 'Россия'
-    },
-    images: ['/vite.svg']
-  },
-  {
-    id: 7,
-    title: 'Медведь в лесу',
-    price: 2700,
-    category: 'Природа',
-    manufacturer: 'Серёжкин дом',
-    inStock: false,
-    description: 'Сдержанная палитра и глубокая фактура, подчёркивающая характер дерева.',
-    specs: {
-      'Материал': 'Массив дуба',
-      'Размер': '40×30 см',
-      'Механизм': 'Кварцевый бесшумный',
-      'Происхождение': 'Россия'
-    },
-    images: ['/vite.svg']
-  },
-  {
-    id: 8,
-    title: 'Теремок',
-    price: 2350,
-    category: 'Детские',
-    manufacturer: 'Серёжкин дом',
-    inStock: true,
-    description: 'Светлые акценты и мягкий контур — идеальный подарок для ребёнка.',
-    specs: {
-      'Материал': 'Массив берёзы',
-      'Размер': '30×30 см',
-      'Механизм': 'Кварцевый бесшумный',
-      'Происхождение': 'Россия'
-    },
-    images: ['/vite.svg']
-  },
-  {
-    id: 9,
-    title: 'Жар-птица',
-    price: 2900,
-    category: 'Традиционные',
-    manufacturer: 'Серёжкин дом',
-    inStock: true,
-    description: 'Акцентная модель с выразительной графикой и золочёным орнаментом.',
-    specs: {
-      'Материал': 'Массив дуба',
-      'Размер': '38×38 см',
-      'Механизм': 'Кварцевый бесшумный',
-      'Происхождение': 'Россия'
-    },
-    images: ['/vite.svg']
-  },
-  {
-    id: 10,
-    title: 'Рябина',
-    price: 2450,
-    category: 'Природа',
-    manufacturer: 'Серёжкин дом',
-    inStock: true,
-    description: 'Нежный рисунок и тёплый тон древесины для камерных интерьеров.',
-    specs: {
-      'Материал': 'Массив липы',
-      'Размер': '32×32 см',
-      'Механизм': 'Кварцевый бесшумный',
-      'Происхождение': 'Россия'
-    },
-    images: ['/vite.svg']
-  }
-]
+  images: [resolveImage(item.image)],
+}))
+
+const getIsoWeek = (date: Date) => {
+  const temp = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
+  const day = temp.getUTCDay() || 7
+  temp.setUTCDate(temp.getUTCDate() + 4 - day)
+  const yearStart = new Date(Date.UTC(temp.getUTCFullYear(), 0, 1))
+  const weekNo = Math.ceil((((temp.getTime() - yearStart.getTime()) / 86400000) + 1) / 7)
+  return { week: weekNo, year: temp.getUTCFullYear() }
+}
+
+export const getWeeklyProduct = (date: Date = new Date()) => {
+  if (!products.length) return undefined
+  const { week, year } = getIsoWeek(date)
+  const seed = year * 100 + week
+  const index = ((seed % products.length) + products.length) % products.length
+  return products[index]
+}

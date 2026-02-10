@@ -85,7 +85,12 @@ const router = useRouter()
 const searchQuery = ref('')
 const selectedCategory = ref('')
 const selectedManufacturer = ref('')
-const priceRange = ref({ min: 0, max: 10000 })
+const priceBounds = computed(() => {
+  if (!products.length) return { min: 0, max: 0 }
+  const prices = products.map(p => p.price)
+  return { min: Math.min(...prices), max: Math.max(...prices) }
+})
+const priceRange = ref({ min: priceBounds.value.min, max: priceBounds.value.max })
 const inStockOnly = ref(false)
 const sortBy = ref('default')
 
@@ -97,7 +102,14 @@ const filteredProducts = computed(() => {
 
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase()
-    result = result.filter(p => p.title.toLowerCase().includes(query))
+    result = result.filter(p =>
+      [
+        p.title,
+        p.description,
+        p.manufacturer,
+        p.category,
+      ].some(value => value.toLowerCase().includes(query))
+    )
   }
 
   if (selectedCategory.value) {
@@ -142,7 +154,7 @@ const resetFilters = () => {
   searchQuery.value = ''
   selectedCategory.value = ''
   selectedManufacturer.value = ''
-  priceRange.value = { min: 0, max: 10000 }
+  priceRange.value = { min: priceBounds.value.min, max: priceBounds.value.max }
   inStockOnly.value = false
   sortBy.value = 'default'
   router.push({ query: {} })
