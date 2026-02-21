@@ -1,0 +1,11 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 750" role="img" aria-label="РР·РѕР±СЂР°Р¶РµРЅРёРµ С‡Р°СЃРѕРІ">
+  <rect width="600" height="750" fill="#f4f5f7"/>
+  <rect x="110" y="110" width="380" height="530" rx="26" fill="#ffffff" stroke="#d5d9df" stroke-width="8"/>
+  <circle cx="300" cy="315" r="135" fill="#f6f7f9" stroke="#c7cdd6" stroke-width="8"/>
+  <circle cx="300" cy="315" r="8" fill="#3c4451"/>
+  <line x1="300" y1="315" x2="300" y2="218" stroke="#3c4451" stroke-width="10" stroke-linecap="round"/>
+  <line x1="300" y1="315" x2="374" y2="349" stroke="#3c4451" stroke-width="8" stroke-linecap="round"/>
+  <rect x="170" y="510" width="260" height="56" rx="12" fill="#f0f3f8"/>
+  <text x="300" y="546" text-anchor="middle" font-size="26" font-family="Arial, sans-serif" fill="#5a6575">Р§Р°СЃС‹</text>
+</svg>
+

@@ -2,14 +2,15 @@
   <header class="site-header">
     <div class="container">
       <div class="flex items-center justify-between py-4">
-        <RouterLink to="/" class="text-xl md:text-2xl font-semibold tracking-tight">
-          Серёжкин дом
+        <RouterLink to="/" class="inline-flex items-center gap-3 text-xl md:text-2xl font-semibold tracking-tight">
+          <Logo />
+          <span>{{ brandName }}</span>
         </RouterLink>
 
         <nav class="hidden lg:flex items-center gap-6">
           <RouterLink to="/" class="nav-link" active-class="nav-link-active">Главная</RouterLink>
           <RouterLink to="/catalog" class="nav-link" active-class="nav-link-active">Каталог</RouterLink>
-          <RouterLink to="/about" class="nav-link" active-class="nav-link-active">О бренде</RouterLink>
+          <RouterLink to="/about" class="nav-link" active-class="nav-link-active">Ваш бренд</RouterLink>
           <RouterLink to="/delivery" class="nav-link" active-class="nav-link-active">Оплата и доставка</RouterLink>
           <RouterLink to="/warranty" class="nav-link" active-class="nav-link-active">Гарантия</RouterLink>
           <RouterLink to="/contacts" class="nav-link" active-class="nav-link-active">Контакты</RouterLink>
@@ -44,7 +45,7 @@
           <nav class="flex flex-col gap-3">
             <RouterLink to="/" class="nav-link" @click="closeMenu">Главная</RouterLink>
             <RouterLink to="/catalog" class="nav-link" @click="closeMenu">Каталог</RouterLink>
-            <RouterLink to="/about" class="nav-link" @click="closeMenu">О бренде</RouterLink>
+            <RouterLink to="/about" class="nav-link" @click="closeMenu">Ваш бренд</RouterLink>
             <RouterLink to="/delivery" class="nav-link" @click="closeMenu">Оплата и доставка</RouterLink>
             <RouterLink to="/warranty" class="nav-link" @click="closeMenu">Гарантия</RouterLink>
             <RouterLink to="/contacts" class="nav-link" @click="closeMenu">Контакты</RouterLink>
@@ -58,6 +59,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useCart } from '../composables/useCart'
+import { brandName } from '../utils/brand'
+import Logo from './Logo.vue'
 import ThemeToggle from './ThemeToggle.vue'
 
 const { cartCount } = useCart()
@@ -67,3 +70,4 @@ const closeMenu = () => {
   mobileOpen.value = false
 }
 </script>
+

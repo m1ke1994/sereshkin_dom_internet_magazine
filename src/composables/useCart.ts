@@ -1,12 +1,12 @@
 import { ref, computed, watch } from 'vue'
-import type { Product } from '../data/products'
+import type { Product } from '../types/catalog'
 
 export interface CartItem {
   product: Product
   quantity: number
 }
 
-const CART_STORAGE_KEY = 'seryozhkin_dom_cart'
+const CART_STORAGE_KEY = 'watch_store_cart'
 
 const cartItems = ref<CartItem[]>([])
 
@@ -14,7 +14,14 @@ function loadCart() {
   const stored = localStorage.getItem(CART_STORAGE_KEY)
   if (stored) {
     try {
-      cartItems.value = JSON.parse(stored)
+      const parsed = JSON.parse(stored) as CartItem[]
+      cartItems.value = parsed.filter(item =>
+        item &&
+        item.product &&
+        typeof item.product.id === 'number' &&
+        typeof item.product.slug === 'string' &&
+        item.quantity > 0
+      )
     } catch (e) {
       console.error('Failed to load cart:', e)
       cartItems.value = []

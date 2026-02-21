@@ -1,6 +1,6 @@
 import { ref, watch, onMounted } from 'vue'
 
-const THEME_STORAGE_KEY = 'seryozhkin_dom_theme'
+const THEME_STORAGE_KEY = 'watch_store_theme'
 
 const isDark = ref(false)
 

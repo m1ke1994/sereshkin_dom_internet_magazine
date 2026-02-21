@@ -12,8 +12,8 @@
           <p class="section-subtitle">Срок 2–5 дней, бережная упаковка, отслеживание посылки.</p>
         </div>
         <div class="card card-hover p-6">
-          <h3 class="text-lg font-semibold">Самовывоз</h3>
-          <p class="section-subtitle">Москва, ул. Петровка 12. Подготовим заказ за 2 часа.</p>
+          <h3 class="text-lg font-semibold">Курьерская доставка</h3>
+          <p class="section-subtitle">Доступна в крупных городах с выбором удобного интервала.</p>
         </div>
         <div class="card card-hover p-6">
           <h3 class="text-lg font-semibold">Оплата</h3>
@@ -24,7 +24,7 @@
       <div class="card p-6 space-y-3">
         <h2 class="text-xl font-semibold">Условия</h2>
         <ul class="space-y-2 text-sm" :style="{ color: 'var(--muted)' }">
-          <li>Доставка бесплатна при заказе от 15 000 ₽.</li>
+          <li>Доставка бесплатна при заказе от 15 000 ?.</li>
           <li>Время сборки заказа — до 24 часов.</li>
           <li>Тщательно проверяем изделия перед отправкой.</li>
         </ul>
@@ -35,3 +35,4 @@
 
 <script setup lang="ts">
 </script>
+

@@ -12,14 +12,14 @@
         <div class="space-y-4">
           <div v-for="item in cartItems" :key="item.product.id" class="card p-6">
             <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
-              <RouterLink :to="`/product/${item.product.id}`" class="h-28 w-28 rounded-2xl bg-neutral-100 flex items-center justify-center">
-                <img :src="item.product.images[0]" :alt="item.product.title" class="h-16 w-16 opacity-70" />
+              <RouterLink :to="`/product/${item.product.slug}`" class="h-28 w-28 rounded-2xl bg-neutral-100 flex items-center justify-center overflow-hidden">
+                <img :src="getProductImage(item.product)" :alt="item.product.title" class="h-full w-full object-cover" />
               </RouterLink>
               <div class="flex-1">
-                <RouterLink :to="`/product/${item.product.id}`">
+                <RouterLink :to="`/product/${item.product.slug}`">
                   <h3 class="text-lg font-semibold">{{ item.product.title }}</h3>
                 </RouterLink>
-                <p class="section-subtitle">{{ item.product.category }}</p>
+                <p class="section-subtitle">{{ item.product.category_name }}</p>
               </div>
               <div class="flex flex-wrap items-center gap-3">
                 <div class="flex items-center gap-2">
@@ -29,7 +29,7 @@
                 </div>
                 <div class="text-right">
                   <p class="text-lg font-semibold" :style="{ color: 'var(--accent)' }">{{ formatPrice(item.product.price * item.quantity) }}</p>
-                  <p class="text-xs" :style="{ color: 'var(--muted)' }">{{ formatPrice(item.product.price) }} × {{ item.quantity }}</p>
+                  <p class="text-xs" :style="{ color: 'var(--muted)' }">{{ formatPrice(item.product.price) }} ? {{ item.quantity }}</p>
                 </div>
                 <button class="btn btn-ghost" @click="removeFromCart(item.product.id)">Удалить</button>
               </div>
@@ -69,9 +69,11 @@
 
 <script setup lang="ts">
 import { useCart } from '../composables/useCart'
+import { getProductImage } from '../utils/productImage'
 
 const { cartItems, cartTotal, cartCount, removeFromCart, updateQuantity } = useCart()
 
 const formatPrice = (price: number) =>
   new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB', minimumFractionDigits: 0 }).format(price)
 </script>
+
