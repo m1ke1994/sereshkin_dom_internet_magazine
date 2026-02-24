@@ -1,7 +1,9 @@
-﻿import type { Category, Product } from "../types/catalog"
+import axios from "axios"
+import type { Category, Product } from "../types/catalog"
 import type { ContactRequestPayload, OrderPayload } from "../types/requests"
 
 const rawApiUrl = (import.meta.env.VITE_API_URL || "/api").trim()
+const CSRF_COOKIE_NAME = "csrftoken"
 
 const normalizeApiUrl = (value: string) => {
   const sanitized = value.replace(/\/+$/, "")
@@ -30,6 +32,14 @@ const normalizeApiUrl = (value: string) => {
 
 const API_URL = normalizeApiUrl(rawApiUrl)
 
+const http = axios.create({
+  baseURL: API_URL,
+  withCredentials: true,
+  headers: {
+    Accept: "application/json",
+  },
+})
+
 interface ProductApiResponse extends Omit<Product, "price"> {
   price: string | number
 }
@@ -47,21 +57,58 @@ const normalizeProduct = (product: ProductApiResponse): Product => ({
   gallery: product.gallery || [],
 })
 
-async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(`${API_URL}${path}`, {
-    ...init,
-    headers: {
-      Accept: "application/json",
-      ...(init?.headers || {}),
-    },
-  })
+const getCookie = (name: string) => {
+  if (typeof document === "undefined") return undefined
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${name}=`)
+  if (parts.length === 2) return parts.pop()?.split(";").shift()
+  return undefined
+}
 
-  if (!response.ok) {
-    const errorText = await response.text()
-    throw new Error(errorText || `HTTP ${response.status}`)
+let csrfRequest: Promise<void> | null = null
+
+export const ensureCsrfCookie = async () => {
+  if (typeof window === "undefined") return
+  if (getCookie(CSRF_COOKIE_NAME)) return
+
+  if (!csrfRequest) {
+    csrfRequest = http
+      .get("/csrf/")
+      .then(() => undefined)
+      .finally(() => {
+        csrfRequest = null
+      })
   }
 
-  return (await response.json()) as T
+  await csrfRequest
+}
+
+const getCsrfHeaders = (): Record<string, string> => {
+  const headers: Record<string, string> = {}
+  const csrfToken = getCookie(CSRF_COOKIE_NAME)
+  if (csrfToken) {
+    headers["X-CSRFToken"] = csrfToken
+  }
+  return headers
+}
+
+async function request<T>(path: string, init?: { method?: string; headers?: Record<string, string>; data?: unknown }): Promise<T> {
+  try {
+    const response = await http.request<T>({
+      url: path,
+      method: init?.method,
+      headers: init?.headers,
+      data: init?.data,
+    })
+    return response.data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const responseData = error.response?.data
+      const detail = typeof responseData === "string" ? responseData : JSON.stringify(responseData || {})
+      throw new Error(detail || error.message || "Request failed")
+    }
+    throw error
+  }
 }
 
 const queryCache = new Map<string, Product[]>()
@@ -113,22 +160,28 @@ export const api = {
   },
 
   async createContactRequest(payload: ContactRequestPayload) {
+    await ensureCsrfCookie()
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+      ...getCsrfHeaders(),
+    }
     return await request("/contact/", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
+      headers,
+      data: payload,
     })
   },
 
   async createOrder(payload: OrderPayload) {
+    await ensureCsrfCookie()
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+      ...getCsrfHeaders(),
+    }
     return await request("/orders/", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
+      headers,
+      data: payload,
     })
   },
 }
