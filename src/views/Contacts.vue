@@ -3,21 +3,21 @@
     <div class="container space-y-10">
       <div>
         <h1 class="section-title">Контакты</h1>
-        <p class="section-subtitle">Мы на связи каждый день с 10:00 до 20:00.</p>
+        <p class="section-subtitle">Оставьте заявку через форму обратной связи, и мы свяжемся с вами для консультации или оформления заказа.</p>
       </div>
 
       <div class="grid gap-6 md:grid-cols-3">
         <div class="card p-6">
-          <h3 class="text-lg font-semibold">Адрес офиса</h3>
-          <p class="section-subtitle">Москва, ул. Петровка, 12</p>
+          <h3 class="text-lg font-semibold">Форма обратной связи</h3>
+          <p class="section-subtitle">Используйте существующую форму сайта, чтобы отправить вопрос, заявку или запрос на расчет стоимости.</p>
         </div>
         <div class="card p-6">
-          <h3 class="text-lg font-semibold">Телефон</h3>
-          <p class="section-subtitle">+7 (999) 123-45-67</p>
+          <h3 class="text-lg font-semibold">Индивидуальный проект</h3>
+          <p class="section-subtitle">Мы поможем с дизайном и изготовлением настенных часов по индивидуальному проекту.</p>
         </div>
         <div class="card p-6">
-          <h3 class="text-lg font-semibold">Почта</h3>
-          <p class="section-subtitle">hello@watch-store.example</p>
+          <h3 class="text-lg font-semibold">Доставка и сроки</h3>
+          <p class="section-subtitle">Организуем надежную упаковку и доставку по Москве и России.</p>
         </div>
       </div>
 
@@ -35,7 +35,7 @@
           <textarea v-model="form.message" class="textarea md:col-span-2" rows="4" placeholder="Ваш вопрос" minlength="5" required></textarea>
         </div>
         <button class="btn btn-primary mt-4" type="submit" :disabled="isSubmitting">
-          {{ isSubmitting ? 'Отправка...' : 'Отправить' }}
+          {{ isSubmitting ? 'Отправка...' : 'Оставить заявку' }}
         </button>
       </form>
     </div>

@@ -4,7 +4,7 @@
       <div class="flex items-end justify-between gap-6 flex-wrap">
         <div>
           <h1 class="section-title">Каталог</h1>
-          <p class="section-subtitle">Подберите ходики по настроению, они впишутся в любой интерьер</p>
+          <p class="section-subtitle">Подберите настенные часы для интерьера, подарка или индивидуального проекта.</p>
         </div>
         <div class="flex items-center gap-3">
           <span class="tag">Найдено: {{ filteredProducts.length }}</span>
@@ -36,7 +36,7 @@
 
         <main class="space-y-6">
           <div class="flex flex-wrap items-center justify-between gap-3">
-            <p class="section-subtitle">Подборка для вашего пространства</p>
+            <p class="section-subtitle">Модели для дома, офиса и декоративных интерьерных решений</p>
             <select v-model="sortBy" class="select max-w-[220px]">
               <option value="default">По умолчанию</option>
               <option value="price-asc">Цена: по возрастанию</option>
@@ -143,4 +143,3 @@ const resetFilters = () => {
   void router.push({ query: {} })
 }
 </script>
-

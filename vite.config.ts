@@ -1,10 +1,32 @@
-import { defineConfig, loadEnv } from 'vite'
+﻿import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { VitePWA } from 'vite-plugin-pwa'
 
+const PLACEHOLDER_BRANDS = new Set([
+  '',
+  'ваш бренд',
+  'наш бренд',
+  'e-clock',
+  'e clock',
+  'your brand',
+  'brand',
+  'company name',
+])
+
+const normalizeBrandName = (value: string | undefined) => {
+  const normalized = (value || '').trim()
+  if (PLACEHOLDER_BRANDS.has(normalized.toLowerCase())) {
+    return 'Eco-Hour'
+  }
+  return normalized || 'Eco-Hour'
+}
+
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', '')
-  const brandName = env.VITE_BRAND_NAME || 'Ваш бренд'
+  const brandName = normalizeBrandName(env.VITE_BRAND_NAME)
+  const manifestDescription =
+    `${brandName} — магазин настенных часов и часов под заказ. ` +
+    'Настенные часы из дерева, индивидуальный дизайн, доставка по Москве и России.'
 
   return {
     plugins: [
@@ -12,26 +34,43 @@ export default defineConfig(({ mode }) => {
       VitePWA({
         registerType: 'autoUpdate',
         filename: 'manifest.json',
-        includeAssets: ['icon-192.png', 'icon-512.png', 'placeholder-watch.svg'],
+        includeAssets: [
+          'logo.svg',
+          'logo.png',
+          'logo.ico',
+          'apple-touch-icon.png',
+          'icon-192.png',
+          'icon-512.png',
+          'placeholder-watch.svg',
+        ],
         manifest: {
-          name: `${brandName} - интернет-магазин часов`,
+          name: brandName,
           short_name: brandName,
-          description: 'Интернет-магазин часов',
+          description: manifestDescription,
           start_url: '/',
+          scope: '/',
           display: 'standalone',
           background_color: '#f7f7f5',
           theme_color: '#0f766e',
           lang: 'ru',
           icons: [
             {
+              src: '/logo.svg',
+              sizes: 'any',
+              type: 'image/svg+xml',
+              purpose: 'any',
+            },
+            {
               src: '/icon-192.png',
               sizes: '192x192',
               type: 'image/png',
+              purpose: 'any',
             },
             {
               src: '/icon-512.png',
               sizes: '512x512',
               type: 'image/png',
+              purpose: 'any',
             },
           ],
         },

@@ -63,6 +63,25 @@
             </div>
           </div>
 
+          <div v-if="technicalSpecs.length" class="card p-5 space-y-3">
+            <h2 class="text-lg font-semibold">Характеристики</h2>
+            <div class="overflow-hidden rounded-2xl border" :style="{ borderColor: 'var(--border)' }">
+              <table class="w-full text-sm">
+                <tbody>
+                  <tr
+                    v-for="spec in technicalSpecs"
+                    :key="spec.label"
+                    class="border-b last:border-b-0"
+                    :style="{ borderColor: 'var(--border)' }"
+                  >
+                    <th scope="row" class="py-3 pl-4 pr-4 text-left font-medium align-top">{{ spec.label }}</th>
+                    <td class="py-3 pr-4">{{ spec.value }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
           <div class="flex flex-wrap items-center gap-4">
             <div class="flex items-center gap-2">
               <button class="btn btn-secondary" type="button" @click="quantity > 1 && quantity--" :disabled="quantity <= 1">-</button>
@@ -112,6 +131,9 @@ import { useCart } from '../composables/useCart'
 import { useCatalogData } from '../composables/useCatalogData'
 import ProductCard from '../components/ProductCard.vue'
 import { getProductImage } from '../utils/productImage'
+import { brandName } from '../utils/brand'
+import { applySeo, defaultSeoDescription } from '../utils/seo'
+import { getProductTechnicalSpecs } from '../utils/productSpecs'
 
 const route = useRoute()
 const { addToCart, isInCart } = useCart()
@@ -136,10 +158,21 @@ const loadProduct = async () => {
   const loadedProduct = await getProductBySlug(slug)
   if (!loadedProduct) {
     errorMessage.value = 'Товар не найден в базе данных.'
+    applySeo({
+      title: `Товар не найден - ${brandName}`,
+      description: defaultSeoDescription,
+    })
   }
 
   product.value = loadedProduct
   selectedImage.value = getProductImage(loadedProduct)
+  if (loadedProduct) {
+    applySeo({
+      title: `${loadedProduct.title} - ${brandName}`,
+      description: loadedProduct.short_description || loadedProduct.description || defaultSeoDescription,
+      image: getProductImage(loadedProduct),
+    })
+  }
   isLoading.value = false
 }
 
@@ -153,6 +186,8 @@ const galleryImages = computed(() => {
   const items = [product.value.image_url, ...product.value.gallery.map(item => item.image_url)]
   return Array.from(new Set(items.filter((item): item is string => Boolean(item))))
 })
+
+const technicalSpecs = computed(() => getProductTechnicalSpecs(product.value))
 
 const relatedProducts = computed(() => {
   if (!product.value) return []
@@ -176,4 +211,3 @@ const handleAddToCart = () => {
   if (product.value) addToCart(product.value, quantity.value)
 }
 </script>
-

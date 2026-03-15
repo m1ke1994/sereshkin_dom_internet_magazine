@@ -2,7 +2,11 @@
   <header class="site-header">
     <div class="container">
       <div class="flex items-center justify-between py-4">
-        <RouterLink to="/" class="inline-flex items-center gap-3 text-xl md:text-2xl font-semibold tracking-tight">
+        <RouterLink
+          to="/"
+          class="inline-flex items-center gap-3 text-xl md:text-2xl font-semibold tracking-tight"
+          aria-label="Eco-Hour"
+        >
           <Logo />
           <span>{{ brandName }}</span>
         </RouterLink>
@@ -10,9 +14,9 @@
         <nav class="hidden lg:flex items-center gap-6">
           <RouterLink to="/" class="nav-link" active-class="nav-link-active">Главная</RouterLink>
           <RouterLink to="/catalog" class="nav-link" active-class="nav-link-active">Каталог</RouterLink>
-          <RouterLink to="/about" class="nav-link" active-class="nav-link-active">Ваш бренд</RouterLink>
-          <RouterLink to="/delivery" class="nav-link" active-class="nav-link-active">Оплата и доставка</RouterLink>
-          <RouterLink to="/warranty" class="nav-link" active-class="nav-link-active">Гарантия</RouterLink>
+          <RouterLink to="/about" class="nav-link" active-class="nav-link-active">О компании</RouterLink>
+          <RouterLink to="/delivery" class="nav-link" active-class="nav-link-active">Доставка</RouterLink>
+          <RouterLink to="/warranty" class="nav-link" active-class="nav-link-active">Возврат</RouterLink>
           <RouterLink to="/contacts" class="nav-link" active-class="nav-link-active">Контакты</RouterLink>
         </nav>
 
@@ -41,15 +45,25 @@
       </div>
 
       <div v-if="mobileOpen" class="lg:hidden pb-4">
-        <div class="card p-4">
+        <div class="card p-4 space-y-4">
+          <RouterLink
+            to="/"
+            class="inline-flex items-center gap-3 text-lg font-semibold tracking-tight"
+            aria-label="Eco-Hour"
+            @click="closeMenu"
+          >
+            <Logo />
+            <span>{{ brandName }}</span>
+          </RouterLink>
           <nav class="flex flex-col gap-3">
             <RouterLink to="/" class="nav-link" @click="closeMenu">Главная</RouterLink>
             <RouterLink to="/catalog" class="nav-link" @click="closeMenu">Каталог</RouterLink>
-            <RouterLink to="/about" class="nav-link" @click="closeMenu">Ваш бренд</RouterLink>
-            <RouterLink to="/delivery" class="nav-link" @click="closeMenu">Оплата и доставка</RouterLink>
-            <RouterLink to="/warranty" class="nav-link" @click="closeMenu">Гарантия</RouterLink>
+            <RouterLink to="/about" class="nav-link" @click="closeMenu">О компании</RouterLink>
+            <RouterLink to="/delivery" class="nav-link" @click="closeMenu">Доставка</RouterLink>
+            <RouterLink to="/warranty" class="nav-link" @click="closeMenu">Возврат</RouterLink>
             <RouterLink to="/contacts" class="nav-link" @click="closeMenu">Контакты</RouterLink>
           </nav>
+          <RouterLink to="/contacts" class="btn btn-secondary w-full" @click="closeMenu">Оставить заявку</RouterLink>
         </div>
       </div>
     </div>
@@ -70,4 +84,3 @@ const closeMenu = () => {
   mobileOpen.value = false
 }
 </script>
-

@@ -1,13 +1,13 @@
-import { createApp } from "vue"
-import { registerSW } from "virtual:pwa-register"
-import App from "./App.vue"
-import router from "./router"
-import { ensureCsrfCookie } from "./services/api"
-import "./style.css"
-import { brandName } from "./utils/brand"
+﻿import { createApp } from 'vue'
+import { registerSW } from 'virtual:pwa-register'
+import App from './App.vue'
+import router from './router'
+import { ensureCsrfCookie } from './services/api'
+import './style.css'
+import { applySeo } from './utils/seo'
 
 registerSW({ immediate: true })
-document.title = `${brandName} - интернет-магазин часов`
+applySeo()
 void ensureCsrfCookie().catch(() => undefined)
 
-createApp(App).use(router).mount("#app")
+createApp(App).use(router).mount('#app')
