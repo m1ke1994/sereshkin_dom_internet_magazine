@@ -36,8 +36,15 @@
         <div class="space-y-3">
           <p class="text-sm font-semibold uppercase tracking-wide">Связь</p>
           <div class="space-y-2 text-sm" :style="{ color: 'var(--muted)' }">
-            <p>Для консультации и расчета заказа используйте форму обратной связи на сайте.</p>
-            <p>Работаем с розничными и оптовыми заказами, доставляем по Москве и России.</p>
+            <p v-if="footerContact.phone">
+              <a class="link" :href="phoneHref">{{ footerContact.phone }}</a>
+            </p>
+            <p v-if="footerContact.email">
+              <a class="link" :href="emailHref">{{ footerContact.email }}</a>
+            </p>
+            <p v-if="footerContact.address">{{ footerContact.address }}</p>
+            <p v-if="!hasContactData && !isFooterLoading">Контактные данные будут добавлены через админку.</p>
+            <p v-if="isFooterLoading && !hasContactData">Загрузка контактов...</p>
           </div>
           <RouterLink to="/contacts" class="btn btn-secondary">Связаться с нами</RouterLink>
         </div>
@@ -51,6 +58,39 @@
 </template>
 
 <script setup lang="ts">
+import { computed, onMounted, ref } from 'vue'
+import { api } from '../services/api'
 import { brandName } from '../utils/brand'
 import Logo from './Logo.vue'
+
+const footerContact = ref({
+  phone: '',
+  email: '',
+  address: '',
+})
+const isFooterLoading = ref(false)
+
+const hasContactData = computed(() =>
+  Boolean(footerContact.value.phone || footerContact.value.email || footerContact.value.address)
+)
+
+const phoneHref = computed(() => {
+  const raw = footerContact.value.phone.trim()
+  const normalized = raw.replace(/[^\d+]/g, '')
+  return normalized ? `tel:${normalized}` : '#'
+})
+
+const emailHref = computed(() => {
+  const email = footerContact.value.email.trim()
+  return email ? `mailto:${email}` : '#'
+})
+
+onMounted(async () => {
+  isFooterLoading.value = true
+  try {
+    footerContact.value = await api.getFooterContact()
+  } finally {
+    isFooterLoading.value = false
+  }
+})
 </script>

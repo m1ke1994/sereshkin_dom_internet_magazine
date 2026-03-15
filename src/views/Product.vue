@@ -54,10 +54,6 @@
             <h2 class="text-lg font-semibold">Описание</h2>
             <p class="text-sm" :style="{ color: 'var(--muted)' }">{{ product.description || 'Описание будет добавлено позже.' }}</p>
             <div class="flex justify-between text-sm border-t pt-3" :style="{ borderColor: 'var(--border)' }">
-              <span :style="{ color: 'var(--muted)' }">Slug</span>
-              <span class="font-medium">{{ product.slug }}</span>
-            </div>
-            <div class="flex justify-between text-sm">
               <span :style="{ color: 'var(--muted)' }">Создан</span>
               <span class="font-medium">{{ formatDate(product.created_at) }}</span>
             </div>

@@ -44,6 +44,18 @@ interface ProductApiResponse extends Omit<Product, "price"> {
   price: string | number
 }
 
+export interface FooterContactResponse {
+  phone: string
+  email: string
+  address: string
+}
+
+const EMPTY_FOOTER_CONTACT: FooterContactResponse = {
+  phone: "",
+  email: "",
+  address: "",
+}
+
 const toNumber = (value: string | number) => {
   const normalized = typeof value === "string" ? Number(value) : value
   return Number.isFinite(normalized) ? normalized : 0
@@ -114,6 +126,13 @@ async function request<T>(path: string, init?: { method?: string; headers?: Reco
 const queryCache = new Map<string, Product[]>()
 const productCache = new Map<string, Product>()
 let categoryCache: Category[] | null = null
+let footerContactCache: FooterContactResponse | null = null
+
+const normalizeFooterContact = (value: Partial<FooterContactResponse> | null | undefined): FooterContactResponse => ({
+  phone: typeof value?.phone === "string" ? value.phone.trim() : "",
+  email: typeof value?.email === "string" ? value.email.trim() : "",
+  address: typeof value?.address === "string" ? value.address.trim() : "",
+})
 
 const buildProductsQuery = (params: { search?: string; category?: string; in_stock?: boolean }) => {
   const query = new URLSearchParams()
@@ -157,6 +176,20 @@ export const api = {
     }
     categoryCache = await request<Category[]>("/categories/")
     return categoryCache
+  },
+
+  async getFooterContact() {
+    if (footerContactCache) {
+      return footerContactCache
+    }
+
+    try {
+      const data = await request<Partial<FooterContactResponse>>("/footer/")
+      footerContactCache = normalizeFooterContact(data)
+      return footerContactCache
+    } catch {
+      return { ...EMPTY_FOOTER_CONTACT }
+    }
   },
 
   async createContactRequest(payload: ContactRequestPayload) {
