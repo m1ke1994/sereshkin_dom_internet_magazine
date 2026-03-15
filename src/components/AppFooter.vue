@@ -27,9 +27,11 @@
         <div class="space-y-3">
           <p class="text-sm font-semibold uppercase tracking-wide">Информация</p>
           <nav class="flex flex-col gap-2">
+            <RouterLink to="/articles" class="nav-link">Статьи</RouterLink>
             <RouterLink to="/about" class="nav-link">О компании</RouterLink>
             <RouterLink to="/delivery" class="nav-link">Доставка</RouterLink>
             <RouterLink to="/warranty" class="nav-link">Обмен и возврат</RouterLink>
+            <RouterLink to="/care" class="nav-link">Рекомендации по уходу</RouterLink>
           </nav>
         </div>
 

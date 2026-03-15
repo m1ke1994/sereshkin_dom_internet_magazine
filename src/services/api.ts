@@ -1,4 +1,5 @@
 import axios from "axios"
+import type { Article } from "../types/article"
 import type { Category, Product } from "../types/catalog"
 import type { ContactRequestPayload, OrderPayload } from "../types/requests"
 
@@ -44,6 +45,10 @@ interface ProductApiResponse extends Omit<Product, "price"> {
   price: string | number
 }
 
+interface ArticleApiResponse extends Article {
+  image_url: string | null
+}
+
 export interface FooterContactResponse {
   phone: string
   email: string
@@ -67,6 +72,12 @@ const normalizeProduct = (product: ProductApiResponse): Product => ({
   image: product.image || null,
   image_url: product.image_url || null,
   gallery: product.gallery || [],
+})
+
+const normalizeArticle = (article: ArticleApiResponse): Article => ({
+  ...article,
+  image: article.image || null,
+  image_url: article.image_url || null,
 })
 
 const getCookie = (name: string) => {
@@ -125,7 +136,9 @@ async function request<T>(path: string, init?: { method?: string; headers?: Reco
 
 const queryCache = new Map<string, Product[]>()
 const productCache = new Map<string, Product>()
+const articleCache = new Map<string, Article>()
 let categoryCache: Category[] | null = null
+let articlesListCache: Article[] | null = null
 let footerContactCache: FooterContactResponse | null = null
 
 const normalizeFooterContact = (value: Partial<FooterContactResponse> | null | undefined): FooterContactResponse => ({
@@ -176,6 +189,31 @@ export const api = {
     }
     categoryCache = await request<Category[]>("/categories/")
     return categoryCache
+  },
+
+  async getArticles() {
+    if (articlesListCache) {
+      return articlesListCache
+    }
+
+    const data = await request<ArticleApiResponse[]>("/articles/")
+    const articles = data.map(normalizeArticle)
+    articlesListCache = articles
+    for (const item of articles) {
+      articleCache.set(item.slug, item)
+    }
+    return articles
+  },
+
+  async getArticleBySlug(slug: string) {
+    if (articleCache.has(slug)) {
+      return articleCache.get(slug) || null
+    }
+
+    const data = await request<ArticleApiResponse>(`/articles/${slug}/`)
+    const article = normalizeArticle(data)
+    articleCache.set(slug, article)
+    return article
   },
 
   async getFooterContact() {

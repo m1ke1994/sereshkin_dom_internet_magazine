@@ -14,9 +14,11 @@
         <nav class="hidden lg:flex items-center gap-6">
           <RouterLink to="/" class="nav-link" active-class="nav-link-active">Главная</RouterLink>
           <RouterLink to="/catalog" class="nav-link" active-class="nav-link-active">Каталог</RouterLink>
+          <RouterLink to="/articles" class="nav-link" active-class="nav-link-active">Статьи</RouterLink>
           <RouterLink to="/about" class="nav-link" active-class="nav-link-active">О компании</RouterLink>
           <RouterLink to="/delivery" class="nav-link" active-class="nav-link-active">Доставка</RouterLink>
-          <RouterLink to="/warranty" class="nav-link" active-class="nav-link-active">Возврат</RouterLink>
+          <RouterLink to="/warranty" class="nav-link" active-class="nav-link-active">Обмен и возврат</RouterLink>
+          <RouterLink to="/care" class="nav-link" active-class="nav-link-active">Уход</RouterLink>
           <RouterLink to="/contacts" class="nav-link" active-class="nav-link-active">Контакты</RouterLink>
         </nav>
 
@@ -58,9 +60,11 @@
           <nav class="flex flex-col gap-3">
             <RouterLink to="/" class="nav-link" @click="closeMenu">Главная</RouterLink>
             <RouterLink to="/catalog" class="nav-link" @click="closeMenu">Каталог</RouterLink>
+            <RouterLink to="/articles" class="nav-link" @click="closeMenu">Статьи</RouterLink>
             <RouterLink to="/about" class="nav-link" @click="closeMenu">О компании</RouterLink>
             <RouterLink to="/delivery" class="nav-link" @click="closeMenu">Доставка</RouterLink>
-            <RouterLink to="/warranty" class="nav-link" @click="closeMenu">Возврат</RouterLink>
+            <RouterLink to="/warranty" class="nav-link" @click="closeMenu">Обмен и возврат</RouterLink>
+            <RouterLink to="/care" class="nav-link" @click="closeMenu">Уход</RouterLink>
             <RouterLink to="/contacts" class="nav-link" @click="closeMenu">Контакты</RouterLink>
           </nav>
           <RouterLink to="/contacts" class="btn btn-secondary w-full" @click="closeMenu">Оставить заявку</RouterLink>

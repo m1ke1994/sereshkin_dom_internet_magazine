@@ -22,7 +22,7 @@ const featuredProductSpecs: ProductTechnicalSpec[] = [
 ]
 
 export const getProductTechnicalSpecs = (product: Product | null | undefined) => {
-  if (!product?.model_of_week) {
+  if (!product) {
     return []
   }
 

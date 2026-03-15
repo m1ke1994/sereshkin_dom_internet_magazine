@@ -5,6 +5,9 @@ import Product from '../views/Product.vue'
 import About from '../views/About.vue'
 import Delivery from '../views/Delivery.vue'
 import Warranty from '../views/Warranty.vue'
+import Care from '../views/Care.vue'
+import Articles from '../views/Articles.vue'
+import ArticleDetail from '../views/ArticleDetail.vue'
 import Contacts from '../views/Contacts.vue'
 import Cart from '../views/Cart.vue'
 import Checkout from '../views/Checkout.vue'
@@ -65,7 +68,34 @@ const router = createRouter({
       component: Warranty,
       meta: {
         seoTitle: `Обмен и возврат - ${brandName}`,
-        seoDescription: `${brandName} — условия обмена и возврата товаров, приобретенных дистанционным способом, и рекомендации по уходу.`,
+        seoDescription: `${brandName} — условия обмена и возврата товаров, приобретенных дистанционным способом.`,
+      },
+    },
+    {
+      path: '/care',
+      name: 'care',
+      component: Care,
+      meta: {
+        seoTitle: `Рекомендации по уходу - ${brandName}`,
+        seoDescription: `${brandName} — рекомендации по уходу за настенными часами и правила аккуратной эксплуатации.`,
+      },
+    },
+    {
+      path: '/articles',
+      name: 'articles',
+      component: Articles,
+      meta: {
+        seoTitle: `Статьи - ${brandName}`,
+        seoDescription: `${brandName} — статьи о выборе настенных часов, уходе и интерьерных решениях.`,
+      },
+    },
+    {
+      path: '/articles/:slug',
+      name: 'article-detail',
+      component: ArticleDetail,
+      meta: {
+        seoTitle: `Статья - ${brandName}`,
+        seoDescription: `${brandName} — полезные материалы о настенных часах и уходе за ними.`,
       },
     },
     {
